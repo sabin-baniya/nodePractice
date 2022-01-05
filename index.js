@@ -11,4 +11,15 @@ function getText(path){
     })
 }
 
-getText('./public/hello.txt').then(res => console.log(res)).catch(err => console.log(err))
+async function start(){
+    try{
+        const result = await getText('./public/hello.txt')
+        console.log(result)
+    }catch(e){
+        console.log(e)
+    }
+}
+
+start();
+
+// getText('./public/hello.txt').then(res => console.log(res)).catch(err => console.log(err))
