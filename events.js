@@ -11,3 +11,15 @@ customEmitter.on('response', ()=> {
 })
 
 customEmitter.emit('response', 'jhon', 45)
+
+// server using events
+
+const http = require('http')
+
+const server = http.createServer()
+
+server.on('request', (req, res) => {
+    res.end('Hello from server using events')
+})
+
+server.listen(5000)
