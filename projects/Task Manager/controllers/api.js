@@ -34,8 +34,21 @@ const getSingleTask = async (req, res) => {
     }
 }
 
-const patchTask = (req, res) => {
-    res.send('Hello there')
+const patchTask = async (req, res) => {
+    try {
+        const {id: taskID} = req.params
+        const task = await Tasks.findOneAndUpdate({_id: taskID}, req.body, { new: true, runValidators: true})
+
+        if(!task){
+            return res.status(404).json({msg: `No such task with id ${id}`})
+        }
+
+        res.status(200).json({task})
+    
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Couldn\'t find task')
+    }
 }
 
 const deleteTask = async (req, res) => {
