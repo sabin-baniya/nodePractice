@@ -76,19 +76,25 @@ const app = express()
 //     res.status(200).json(sortedProducts)
 // })
 
-const logger = require('./logger')
-const authorize = require('./authorize')
+// const logger = require('./logger')
+// const authorize = require('./authorize')
 
-app.use([ authorize, logger])
+// app.use([ authorize, logger])
 
-app.get('/', (req,res) => {
-    res.send('Home')
-    console.log(req.user)
-})
+// app.get('/', (req,res) => {
+//     res.send('Home')
+//     console.log(req.user)
+// })
 
-app.get('/about', (req,res) => {
-    res.send('About')
-    console.log(req.user)
+// app.get('/about', (req,res) => {
+//     res.send('About')
+//     console.log(req.user)
+// })
+
+app.use(express.static('./methods-public'))
+
+app.post('/login', (req, res) => {
+    res.status(200).send('Post')
 })
 
 app.listen(5000)
