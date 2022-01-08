@@ -1,5 +1,6 @@
 const express = require('express')
-require('./db/connection')
+const connectDB = require('./db/connection')
+require('dotenv').config()
 
 const app = express()
 
@@ -11,4 +12,14 @@ app.use(express.json())
 //routes
 app.use('/api/v1/tasks', api_v1)
 
-app.listen(5000)
+const start = async () => {
+    try {
+        await connectDB(process.env.MONGO_URI)
+        app.listen(5000, () => console.log('Connected succesfully'))
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+start()
