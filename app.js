@@ -92,8 +92,10 @@ const app = express()
 // })
 
 app.use(express.static('./methods-public'))
+app.use(express.urlencoded({extended: false}))
 
 app.post('/login', (req, res) => {
+    console.log(req.body)
     res.status(200).send('Post')
 })
 
