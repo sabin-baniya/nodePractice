@@ -8,6 +8,7 @@ const api_v1 = require('./routes/api')
 
 //middleware
 app.use(express.json())
+app.use(express.static('./public'))
 
 //routes
 app.use('/api/v1/tasks', api_v1)
