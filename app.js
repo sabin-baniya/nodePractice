@@ -91,53 +91,14 @@ const app = express()
 //     console.log(req.user)
 // })
 
-let { people } = require('./data')
+const api = require('./routes/api')
+const login = require('./routes/login')
 
 app.use(express.static('./methods-public'))
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-app.post('/login', (req, res) => {
-    const {name} = req.body
-
-    if(name){
-        return res.status(200).send(`Hello ${name}`)
-    }
-
-    res.status(400).send('No credentials entered')
-})
-
-app.post('/api/people', (req, res) => {
-    const {name} = req.body
-    if(!name){
-        return res.status(400).json({success: false, data: []})
-    }else{
-        return res.status(201).json({success: true, person: name})
-    }
-})
-
-app.put('/api/people/:id', (req, res) => {
-    const {id} = req.params
-    const {name} = req.body
-
-    const person = people.find(pep => pep.id === parseInt(id))
-
-    const newPeople = people.map((person) => {
-        if(person.id === parseInt(id)){
-            person.name = name
-        }
-        return person
-    })
-
-    if(person){
-        return res.status(200).send({success: true, data: newPeople})
-    }
-
-    return res.status(400).json({success: false, data: 'Doesn\'t exist'})
-})
-
-app.get('/api/people', (req, res) => {
-    res.status(200).json({people})
-})
+app.use('/api/people', api)
+app.use('/login', login)
 
 app.listen(5000)
