@@ -91,6 +91,8 @@ const app = express()
 //     console.log(req.user)
 // })
 
+let { people } = require('./data')
+
 app.use(express.static('./methods-public'))
 app.use(express.urlencoded({extended: false}))
 
@@ -102,6 +104,10 @@ app.post('/login', (req, res) => {
     }
 
     res.status(400).send('No credentials entered')
+})
+
+app.get('/api/people', (req, res) => {
+    res.status(200).json({people})
 })
 
 app.listen(5000)
