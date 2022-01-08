@@ -95,8 +95,13 @@ app.use(express.static('./methods-public'))
 app.use(express.urlencoded({extended: false}))
 
 app.post('/login', (req, res) => {
-    console.log(req.body)
-    res.status(200).send('Post')
+    const {name} = req.body
+
+    if(name){
+        return res.status(200).send(`Hello ${name}`)
+    }
+
+    res.status(400).send('No credentials entered')
 })
 
 app.listen(5000)
