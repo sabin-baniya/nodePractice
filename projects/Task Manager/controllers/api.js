@@ -1,70 +1,48 @@
 const Tasks = require('../models/schema')
+const asyncHandler = require('../middlewares/async-handler')
 
-const getTasks = async (req, res) => {
-    try{
-        const tasks = await Tasks.find({})
-        res.status(200).json({tasks})
-    }catch(error){
-        res.status(500).json({msg: error})
-    }
-    
-}
+const getTasks = asyncHandler (async (req, res) => {
+    const tasks = await Tasks.find({})
+    res.status(200).json({tasks})    
+})
 
-const postTasks = async (req, res) => {
-    try {
-        const task = await Tasks.create(req.body)
-        res.status(201).send(task)
-    } catch (error) {
-        res.status(500).json({msg: error})
-    }
-}
+const postTasks = asyncHandler( async (req, res) => {
+    const task = await Tasks.create(req.body)
+    res.status(201).send(task)
+})
 
-const getSingleTask = async (req, res) => {
-    try {
-        const {id:TaskID} = req.params
-        const task = await Tasks.findOne({_id:TaskID})
+const getSingleTask = asyncHandler( async (req, res) => {
+    const {id:TaskID} = req.params
+    const task = await Tasks.findOne({_id:TaskID})
 
-        if(!task){
+    if(!task){
             return res.status(404).json({msg: `No such task with id ${id}`})
-        }
-
-        res.status(200).json({task})
-    } catch (error) {
-        res.status(500).json({msg: error})
     }
-}
 
-const patchTask = async (req, res) => {
-    try {
-        const {id: taskID} = req.params
-        const task = await Tasks.findOneAndUpdate({_id: taskID}, req.body, { new: true, runValidators: true})
+    res.status(200).json({task})
+})
 
-        if(!task){
-            return res.status(404).json({msg: `No such task with id ${id}`})
-        }
+const patchTask = asyncHandler( async (req, res) => {
+    const {id: taskID} = req.params
+    const task = await Tasks.findOneAndUpdate({_id: taskID}, req.body, { new: true, runValidators: true})
 
-        res.status(200).json({task})
-    
-    } catch (error) {
-        console.log(error)
-        res.status(500).send('Couldn\'t find task')
+    if(!task){
+        return res.status(404).json({msg: `No such task with id ${id}`})
     }
-}
 
-const deleteTask = async (req, res) => {
-    try {
-        const {id:TaskID} = req.params
-        const task = await Tasks.findOneAndDelete({_id:TaskID})
+    res.status(200).json({task})
+})
 
-        if(!task){
-            return res.status(404).json({msg: `No such task with id ${id}`})
-        }
+const deleteTask = asyncHandler( async (req, res) => {
+    const {id:TaskID} = req.params
+    const task = await Tasks.findOneAndDelete({_id:TaskID})
 
-        res.status(200).json({task})
-    } catch (error) {
-        res.status(500).json({msg: error}) 
-    } 
-}
+    if(!task){
+        return res.status(404).json({msg: `No such task with id ${id}`})
+    }
+
+    res.status(200).json({task})
+})
 
 module.exports = {
     getTasks,
